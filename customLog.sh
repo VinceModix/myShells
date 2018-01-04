@@ -7,8 +7,11 @@
 
 # init defaults
 
-defaultFILENAME="log-"$(date +%s)".jpg" # filename cam12345678.jpg
-defaultDIR="/home/pi/logs"
+
+DATE=`date +%Y-%m-%d:%H:%M:%S`
+UNIX=$(date +%s)
+FILE="log-"$DATE.txt" # filename log12345678.txt
+DIR="/home/pi/logs" # add 'pwd' command to construct '/home/pi'
 
 #----------------------------------------------------------------
 
@@ -17,46 +20,6 @@ defaultDIR="/home/pi/logs"
 # echo $2 #parameter 2
 # echo $3 #parameter 3
 # echo $4 #parameter 4
-
-# filename parameter
-if [ -z "$1" ]
-then
-	FILE=$defaultFILENAME
-else
-	FILE=$1
-fi
-
-# directory parameter
-if [ -z "$2" ]
-then
-	DIR=$defaultDIR
-else
-	DIR=$2
-fi
-
-# delay parameter
-if [ -z "$3" ]
-then
-	DELAY=$defaultDELAY
-else
-	DELAY=$3
-fi
-
-# width parameter
-if [ -z "$4" ]
-then
-	WIDTH=$defaultWIDTH
-else
-	WIDTH=$4
-fi
-
-# height parameter
-if [ -z "$5" ]
-then
-	HEIGHT=$defaultHEIGHT
-else
-	HEIGHT=$5
-fi
 
 
 # check if directory excists
@@ -71,7 +34,15 @@ else
 	echo "$DIR directory permissions set..."
 fi
 
-raspistill -o $DIR/$FILE -t 1000 -w 1920 -h 1080
+echo "Custom Loggin File" -> $DIR/$FILE
+echo "-------------------------------------------------------------------------" >> $DIR/$FILE
+echo "Custom Loggin File" -> $DIR/$FILE
+echo "-------------------------------------------------------------------------" >> $DIR/$FILE
+echo "Custom Loggin File" -> $DIR/$FILE
+
+
+
+chmod u=rwx,g=rwx,o=rwx $DIR
 
 # check if file is created
 if [ -f "$DIR/$FILE" ]
@@ -84,3 +55,9 @@ else
 fi
 
 
+# pause the script
+sleep 60
+
+#continue logging
+
+IFCONFIG >> $DIR/$FILE
